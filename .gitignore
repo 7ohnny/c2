@@ -1,0 +1,4 @@
+# exclude venv and .idea
+venv/
+.idea/
+__pycache__/
